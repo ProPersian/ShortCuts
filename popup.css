@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 330px;
+    min-height: 350px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 4px;
+}
+
+.container {
+    background: white;
+    border-radius: 3px;
+    padding: 6px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.25);
+}
+
+h1 {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 4px;
+    text-align: center;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #667eea;
+}
+
+.tabs {
+    display: flex;
+    gap: 1px;
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 2px 4px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+    color: #666;
+    border-radius: 6px;
+    transition: 0.3s;
+}
+
+.tab-btn:hover {
+    background: #f0f0f0;
+}
+
+.tab-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.shortcut-list {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.shortcut-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 6px;
+    margin-bottom: 2px;
+    background: #f8f9fa;
+    border-radius: 2px;
+    border-right: 3px solid #667eea;
+    transition: 0.2s;
+    cursor: grab;
+    font-size: 10px;
+}
+
+.shortcut-item:hover {
+    background: #e9ecef;
+}
+
+.shortcut-item .drag-handle {
+    cursor: grab;
+    color: #999;
+    margin-left: 6px;
+    font-size: 11px;
+    user-select: none;
+}
+
+.shortcut-item .shortcut-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.shortcut-item .shortcut-name {
+    font-weight: 800;
+    color: #333;
+    font-size: 11px;
+    flex: 1;
+    text-align: right;
+}
+
+.shortcut-item .shortcut-keys {
+    font-size: 11px;
+    color: #667eea;
+    background: white;
+    padding: 3px 7px;
+    border-radius: 8px;
+    border: 1px solid #667eea;
+    white-space: nowrap;
+    direction: ltr;
+    unicode-bidi: bidi-override;
+    font-weight: bold;
+}
+
+.shortcut-item .priority-badge {
+    display: none;
+}
+
+.shortcut-item .delete-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 3px;
+    opacity: 0;
+}
+
+.shortcut-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.custom-controls {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.custom-controls input {
+    flex: 1;
+    padding: 4px 8px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 12px;
+    min-width: 80px;
+}
+
+.custom-controls input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.custom-controls button {
+    padding: 4px 12px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.custom-controls button:hover {
+    background: #5a67d8;
+}
+
+.footer {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+#reset-defaults {
+    padding: 4px 14px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#reset-defaults:hover {
+    background: #5a6268;
+}
+
+.shortcut-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.shortcut-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.shortcut-list::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 3px;
+}
+
+.shortcut-item.dragging {
+    opacity: 0.4;
+}
+
+.shortcut-item.drag-over {
+    border: 2px dashed #667eea;
+    background: #e8ecff;
+}

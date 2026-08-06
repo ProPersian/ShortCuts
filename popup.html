@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>راهنمای میانبرها</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📋 میانبرهای مفید</h1>
+        
+         <div class="tabs">
+             <button class="tab-btn active" data-tab="chrome">🌐 کروم</button>
+             <button class="tab-btn" data-tab="windows">🪟 ویندوز</button>
+             <button class="tab-btn" data-tab="vscode">💻 VS Code</button>
+             <button class="tab-btn" data-tab="custom">⚙️ سفارشی</button>
+         </div>
+
+         <div class="tab-content active" id="chrome">
+             <div class="shortcut-list" id="chrome-list"></div>
+         </div>
+
+         <div class="tab-content" id="windows">
+             <div class="shortcut-list" id="windows-list"></div>
+         </div>
+
+         <div class="tab-content" id="vscode">
+             <div class="shortcut-list" id="vscode-list"></div>
+         </div>
+
+         <div class="tab-content" id="custom">
+            <div class="custom-controls">
+                <input type="text" id="new-shortcut-name" placeholder="نام میانبر...">
+                <input type="text" id="new-shortcut-keys" placeholder="کلیدهای میانبر...">
+                <button id="add-shortcut">➕ افزودن</button>
+            </div>
+            <div class="shortcut-list" id="custom-list"></div>
+        </div>
+
+        <div class="footer">
+            <button id="reset-defaults">🔄 بازنشانی به حالت اولیه</button>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

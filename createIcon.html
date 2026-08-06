@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ساخت آیکون‌های افزونه</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: center;
+            background: #f0f0f0;
+            padding: 30px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .icon-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .icon-box {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+        .icon-box img {
+            display: block;
+            margin: 10px auto;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        .icon-box .size {
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 8px;
+        }
+        .download-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+        .download-btn:hover {
+            background: #5a67d8;
+        }
+        .download-all {
+            background: #28a745;
+        }
+        .download-all:hover {
+            background: #218838;
+        }
+        canvas {
+            display: none;
+        }
+        .success {
+            color: #28a745;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 ساخت آیکون‌های افزونه</h1>
+        <p>آیکون‌های زیر برای افزونه <strong>راهنمای میانبرها</strong> ساخته شده‌اند:</p>
+        
+        <div class="icon-grid" id="iconGrid"></div>
+        
+        <div>
+            <button class="download-btn download-all" onclick="downloadAll()">
+                ⬇️ دانلود همه آیکون‌ها
+            </button>
+            <button class="download-btn" onclick="downloadZip()">
+                📦 دانلود به صورت ZIP
+            </button>
+        </div>
+        
+        <div id="status" style="margin-top:15px;"></div>
+        
+        <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee;">
+            <h3>📁 دستورالعمل:</h3>
+            <ol style="text-align: right; max-width: 500px; margin: 10px auto;">
+                <li>روی دکمه <strong>"دانلود همه آیکون‌ها"</strong> کلیک کنید</li>
+                <li>فایل‌های دانلود شده را در پوشه افزونه قرار دهید</li>
+                <li>نام فایل‌ها باید دقیقاً <code>icon16.png</code>، <code>icon48.png</code> و <code>icon128.png</code> باشد</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // تابع رسم آیکون با اندازه دلخواه
+        function createIcon(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // محاسبه نسبت‌ها برای اندازه‌های مختلف
+            const scale = size / 128;
+            const radius = 20 * scale;
+            const fontSize = 60 * scale;
+            const emojiSize = 56 * scale;
+            
+            // پس‌زمینه با گرادینت
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            
+            // گوشه‌های گرد
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+            
+            // اضافه کردن یک خط نورانی در بالا (جلوه زیبا)
+            const highlightGradient = ctx.createLinearGradient(0, 0, 0, size * 0.4);
+            highlightGradient.addColorStop(0, 'rgba(255,255,255,0.3)');
+            highlightGradient.addColorStop(1, 'rgba(255,255,255,0)');
+            ctx.fillStyle = highlightGradient;
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size * 0.4);
+            ctx.lineTo(0, size * 0.4);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fill();
+            
+            // آیکون صفحه کلید (به جای ایموجی برای نمایش بهتر)
+            if (size >= 48) {
+                // کشیدن کیبورد ساده
+                const kx = size * 0.2;
+                const ky = size * 0.55;
+                const kw = size * 0.6;
+                const kh = size * 0.3;
+                
+                // بدنه کیبورد
+                ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                ctx.shadowColor = 'rgba(0,0,0,0.2)';
+                ctx.shadowBlur = 4 * scale;
+                ctx.beginPath();
+                ctx.roundRect(kx, ky, kw, kh, 4 * scale);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                
+                // کلیدهای کیبورد (چند خط ساده)
+                ctx.strokeStyle = 'rgba(0,0,0,0.2)';
+                ctx.lineWidth = 1.5 * scale;
+                
+                // ردیف اول کلیدها
+                const keyRows = 3;
+                const keyCols = 6;
+                const keySpacing = 4 * scale;
+                const keyW = (kw - (keyCols + 1) * keySpacing) / keyCols;
+                const keyH = (kh - (keyRows + 1) * keySpacing) / keyRows;
+                
+                for (let row = 0; row < keyRows; row++) {
+                    for (let col = 0; col < keyCols; col++) {
+                        const x = kx + keySpacing + col * (keyW + keySpacing);
+                        const y = ky + keySpacing + row * (keyH + keySpacing);
+                        
+                        // کلیدهای بزرگ‌تر در ردیف وسط
+                        let w = keyW;
+                        if (row === 1 && col === 0) w = keyW * 1.5;
+                        if (row === 1 && col === keyCols - 1) w = keyW * 1.5;
+                        
+                        ctx.fillStyle = 'rgba(118, 75, 162, 0.15)';
+                        ctx.beginPath();
+                        ctx.roundRect(x, y, w, keyH, 2 * scale);
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                }
+                
+                // نوار space
+                const spaceX = kx + kw * 0.2;
+                const spaceY = ky + kh - keySpacing - keyH;
+                const spaceW = kw * 0.6;
+                ctx.fillStyle = 'rgba(118, 75, 162, 0.1)';
+                ctx.beginPath();
+                ctx.roundRect(spaceX, spaceY, spaceW, keyH, 2 * scale);
+                ctx.fill();
+                ctx.stroke();
+            }
+            
+            // نوشتن متن "⌨" به عنوان ایموجی کیبورد
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${fontSize}px Arial, "Segoe UI Emoji", "Apple Color Emoji", sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // سایه برای خوانایی بهتر
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = 4 * scale;
+            ctx.fillText('⌨', size/2, size * 0.38);
+            ctx.shadowBlur = 0;
+            
+            // اگر سایز کوچک است، یک نقطه رنگ اضافه کنیم
+            if (size <= 48) {
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                ctx.beginPath();
+                ctx.arc(size - 8 * scale, 8 * scale, 4 * scale, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // اضافه کردن یک دایره کوچک نشان‌دهنده "میانبر"
+            if (size >= 48) {
+                ctx.fillStyle = 'rgba(255,255,255,0.25)';
+                ctx.beginPath();
+                ctx.arc(size - 12 * scale, 12 * scale, 8 * scale, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                ctx.font = `${12 * scale}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('⚡', size - 12 * scale, 12 * scale + 1 * scale);
+            }
+            
+            return canvas;
+        }
+
+        // اضافه کردن roundRect به Canvas
+        CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+            if (r > w/2) r = w/2;
+            if (r > h/2) r = h/2;
+            this.moveTo(x + r, y);
+            this.lineTo(x + w - r, y);
+            this.quadraticCurveTo(x + w, y, x + w, y + r);
+            this.lineTo(x + w, y + h - r);
+            this.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            this.lineTo(x + r, y + h);
+            this.quadraticCurveTo(x, y + h, x, y + h - r);
+            this.lineTo(x, y + r);
+            this.quadraticCurveTo(x, y, x + r, y);
+            return this;
+        };
+
+        // دانلود یک آیکون
+        function downloadIcon(size) {
+            const canvas = createIcon(size);
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // دانلود همه
+        function downloadAll() {
+            const sizes = [16, 48, 128];
+            sizes.forEach(size => {
+                setTimeout(() => downloadIcon(size), 200 * sizes.indexOf(size));
+            });
+            
+            document.getElementById('status').innerHTML = 
+                '<div class="success">✅ آیکون‌ها در حال دانلود هستند...</div>';
+            
+            setTimeout(() => {
+                document.getElementById('status').innerHTML = 
+                    '<div class="success">✅ همه آیکون‌ها دانلود شدند! فایل‌ها را در پوشه افزونه قرار دهید.</div>';
+            }, 1000);
+        }
+
+        // دانلود به صورت ZIP (ساده)
+        function downloadZip() {
+            alert('برای دانلود ZIP، لطفاً روی "دانلود همه آیکون‌ها" کلیک کنید و فایل‌ها را در یک پوشه ذخیره کنید.');
+            downloadAll();
+        }
+
+        // نمایش پیش‌نمایش
+        function showPreviews() {
+            const grid = document.getElementById('iconGrid');
+            const sizes = [16, 48, 128];
+            
+            sizes.forEach(size => {
+                const canvas = createIcon(size);
+                const dataUrl = canvas.toDataURL('image/png');
+                
+                const box = document.createElement('div');
+                box.className = 'icon-box';
+                box.innerHTML = `
+                    <img src="${dataUrl}" alt="icon${size}" width="${Math.min(size, 80)}" height="${Math.min(size, 80)}">
+                    <div class="size">${size}×${size} پیکسل</div>
+                    <button class="download-btn" onclick="downloadIcon(${size})">⬇️ دانلود</button>
+                `;
+                grid.appendChild(box);
+            });
+        }
+
+        // اجرا
+        showPreviews();
+        
+        // راهنمایی اضافی
+        console.log('آیکون‌ها با موفقیت ساخته شدند!');
+    </script>
+</body>
+</html>
